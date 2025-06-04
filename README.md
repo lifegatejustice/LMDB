@@ -1,27 +1,31 @@
-# BYU-Pathway Worldwide Online
-## WDD 330 - Web Frontend Development II
+ # LMDB - Movie Database Web Application
 
-### ⛺ SleepOutside Starter Code
+This project is a web application for browsing and searching movies, built as part of a frontend development project.
 
- - This repository is the start of the SleepOutside web application project for WDD 330. The repository contains branches which are checkpoints for the team and individual assignments throughout the course.
+## Live Demo
 
- - https://byui-cse.github.io/wdd330-ww-course/week01/team.html
+You can view the live version of the application hosted on Netlify:
 
-### Prerequisites
+[https://lmoviedb.netlify.app/](https://lmoviedb.netlify.app/)
 
-- You must have Node installed to run the following commands.
-[WDD 330 Setup Environment](https://byui-cse.github.io/wdd330-ww-course/intro/) 
+## Prerequisites
 
-### Common Workflow Commands
+- Node.js installed on your machine to run the development server and build commands.
 
-- `npm run lint` to run ESLint against your code to find errors.
-- `npm run format` to run Prettier to automatically format your code.
-- `npm run start` starts up a local server and updates on any JS or CSS/SCSS 
-- `npm run build` to build final files when you are ready to turn in.
+## Common Workflow Commands
 
+- `npm run lint` - Run ESLint to check for code errors and style issues.
+- `npm run format` - Run Prettier to automatically format your code.
+- `npm run start` - Start the local development server with live reload.
+- `npm run build` - Build the production-ready files for deployment.
+
+## Project Structure
+
+- `src/` - Source files including scripts, styles, and configuration.
+- `src/scripts/` - JavaScript files for application logic and components.
+- `src/styles/` - CSS stylesheets.
+- `src/index.html` - Main HTML file.
 
 ---
-_BYU-Pathway Worldwide improves lives through access to spiritually based, online affordable higher education. Its mission is to develop disciples of Jesus Christ who are leaders in their homes, the Church, and their communities._
 
-
-
+This project is deployed on Netlify for easy access and demonstration purposes.
