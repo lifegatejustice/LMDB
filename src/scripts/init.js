@@ -1,4 +1,11 @@
-import { headerComponent, footerComponent, searchBarComponent, featuredMoviesComponent, genresComponent, topRatedMoviesComponent } from "./components.js";
+import {
+  headerComponent,
+  footerComponent,
+  searchBarComponent,
+  featuredMoviesComponent,
+  genresComponent,
+  topRatedMoviesComponent,
+} from "./components.js";
 
 export function loadComponents() {
   document.getElementById("header-container").innerHTML = headerComponent;

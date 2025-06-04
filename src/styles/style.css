@@ -1,24 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Poppins&display=swap");
 
 :root {
-  --falu-red: #800E13;
-  --rosewood: #640D14;
-  --auburn: #AD2831;
-  --white: #FFFFFF;
+  --falu-red: #800e13;
+  --rosewood: #640d14;
+  --auburn: #ad2831;
+  --white: #ffffff;
   --black: #000000;
   --gray: #808080;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: var(--white);
   color: var(--black);
   margin: 0;
   padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
+header h1 {
+  color: var(--white);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Outfit", sans-serif;
   color: var(--falu-red);
   margin: 0 0 1rem 0;
 }
@@ -146,7 +155,7 @@ footer {
   border-radius: 8px;
   overflow: hidden;
   background-color: var(--white);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
 }
 
