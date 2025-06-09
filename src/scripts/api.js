@@ -65,4 +65,20 @@ export class TMDbAPI {
       return [];
     }
   }
+
+  // New method to get movie details by ID
+  async getMovieDetails(movieId) {
+    const url = `${this.baseUrl}/movie/${movieId}?api_key=${this.apiKey}&append_to_response=videos,credits`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+      return null;
+    }
+  }
 }

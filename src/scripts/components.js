@@ -12,7 +12,7 @@ export const headerComponent = `
   </header>
 `;
 
-export const footerComponent = `
+ export const footerComponent = `
   <footer>
     &copy; 2025 Movie Companion App
   </footer>
@@ -52,4 +52,41 @@ export const topRatedMoviesComponent = `
       <!-- Top rated movies will be rendered here -->
     </div>
   </section>
+`;
+
+// New component for movie detail view
+export const movieDetailComponent = `
+  <section id="movie-detail" class="movie-detail">
+    <button id="back-button" aria-label="Back to search results">← Back</button>
+    <div class="movie-detail-content">
+      <img id="detail-poster" class="detail-poster" src="" alt="Movie Poster" />
+      <div class="detail-info">
+        <h2 id="detail-title"></h2>
+        <p id="detail-genres"></p>
+        <p id="detail-release-date"></p>
+        <p id="detail-overview"></p>
+        <p id="detail-rating"></p>
+        <div id="streaming-availability"></div>
+        <div id="trailer-container"></div>
+        <div id="cast-container"></div>
+        <button id="favorite-button" aria-label="Add to favorites">Add to Favorites</button>
+      </div>
+    </div>
+  </section>
+`;
+
+// New component for cast member card
+export const castMemberComponent = (cast) => `
+  <div class="cast-member">
+    <img src="${cast.profile_path ? "https://image.tmdb.org/t/p/w185" + cast.profile_path : "https://via.placeholder.com/185x278?text=No+Image"}" alt="${cast.name}" />
+    <p class="cast-name">${cast.name}</p>
+    <p class="cast-character">as ${cast.character}</p>
+  </div>
+`;
+
+// New component for streaming platform link
+export const streamingPlatformComponent = (platform) => `
+  <a href="${platform.url}" target="_blank" rel="noopener noreferrer" class="streaming-link">
+    <img src="${platform.logo_url}" alt="${platform.name}" title="${platform.name}" />
+  </a>
 `;
