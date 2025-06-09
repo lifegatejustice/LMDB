@@ -5,6 +5,8 @@ import {
   featuredMoviesComponent,
   genresComponent,
   topRatedMoviesComponent,
+  movieDetailsComponent,
+  favoritesComponent,
 } from "./components.js";
 
 export function loadComponents() {
@@ -29,6 +31,16 @@ export function loadComponents() {
   topRatedSection.id = "top-rated-movies-section";
   topRatedSection.innerHTML = topRatedMoviesComponent;
   main.insertBefore(topRatedSection, document.getElementById("results"));
+
+  const movieDetailsSection = document.createElement("div");
+  movieDetailsSection.id = "movie-details-section";
+  movieDetailsSection.innerHTML = movieDetailsComponent;
+  main.appendChild(movieDetailsSection);
+
+  const favoritesSection = document.createElement("div");
+  favoritesSection.id = "favorites-section";
+  favoritesSection.innerHTML = favoritesComponent;
+  main.appendChild(favoritesSection);
 }
 
 loadComponents();

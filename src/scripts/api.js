@@ -21,6 +21,75 @@ export class TMDbAPI {
     }
   }
 
+  async getMovieDetails(movieId) {
+    const url = `${this.baseUrl}/movie/${movieId}?api_key=${this.apiKey}&append_to_response=credits`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+      return null;
+    }
+  }
+
+  async getMovieTrailerKey(movieId) {
+    const url = `${this.baseUrl}/movie/${movieId}/videos?api_key=${this.apiKey}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      const trailer = data.results.find(
+        (video) => video.type === "Trailer" && video.site === "YouTube",
+      );
+      return trailer ? trailer.key : null;
+    } catch (error) {
+      console.error("Error fetching movie trailer:", error);
+      return null;
+    }
+  }
+
+  async getStreamingProviders(movieId) {
+    if (!this.watchmodeApiKey) {
+      console.warn("Watchmode API key not set");
+      return [];
+    }
+    try {
+      // First, get the Watchmode ID for the movie using TMDb ID
+      const searchUrl = `https://api.watchmode.com/v1/search/?apiKey=${this.watchmodeApiKey}&search_field=tmdb_id&search_value=${movieId}`;
+      const searchResponse = await fetch(searchUrl);
+      if (!searchResponse.ok) {
+        throw new Error("Failed to fetch Watchmode search results");
+      }
+      const searchData = await searchResponse.json();
+      if (!searchData.title_results || searchData.title_results.length === 0) {
+        return [];
+      }
+      const watchmodeId = searchData.title_results[0].id;
+
+      // Then, get the streaming sources for the Watchmode ID
+      const sourcesUrl = `https://api.watchmode.com/v1/title/${watchmodeId}/sources/?apiKey=${this.watchmodeApiKey}`;
+      const sourcesResponse = await fetch(sourcesUrl);
+      if (!sourcesResponse.ok) {
+        throw new Error("Failed to fetch Watchmode sources");
+      }
+      const sourcesData = await sourcesResponse.json();
+
+      // Filter for streaming sources with logos
+      const streamingProviders = sourcesData.filter(source => source.type === "sub" && source.logo_url);
+
+      return streamingProviders;
+    } catch (error) {
+      console.error("Error fetching streaming providers:", error);
+      return [];
+    }
+  }
+
   async getPopularMovies() {
     const url = `${this.baseUrl}/movie/popular?api_key=${this.apiKey}`;
     try {
