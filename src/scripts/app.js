@@ -54,20 +54,23 @@ class App {
     const header = document.querySelector("header");
     header.addEventListener("click", (e) => {
       if (e.target.tagName === "A") {
-        e.preventDefault();
-        const linkText = e.target.textContent.toLowerCase();
-        if (linkText === "home") {
-          this.handleBack();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        } else if (linkText === "movies") {
-          const featuredSection = document.getElementById("featured-movies-section");
-          if (featuredSection) {
-            featuredSection.scrollIntoView({ behavior: "smooth" });
+        const href = e.target.getAttribute("href");
+        if (href === "#" || href === null) {
+          e.preventDefault();
+          const linkText = e.target.textContent.toLowerCase();
+          if (linkText === "home") {
+            this.handleBack();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else if (linkText === "movies") {
+            const featuredSection = document.getElementById("featured-movies-section");
+            if (featuredSection) {
+              featuredSection.scrollIntoView({ behavior: "smooth" });
+            }
+          } else if (linkText === "tv shows") {
+            this.showTVShowsSection();
+          } else if (linkText === "about") {
+            this.showAboutSection();
           }
-        } else if (linkText === "tv shows") {
-          alert("TV Shows section is not implemented yet.");
-        } else if (linkText === "about") {
-          alert("About section is not implemented yet.");
         }
       }
     });
@@ -115,11 +118,16 @@ class App {
 
   async handleMovieClick(title) {
     this.resultsContainer.style.display = "none";
-    this.featuredMoviesContainer.style.display = "none";
-    this.genresList.style.display = "none";
-    this.topRatedMoviesContainer.style.display = "none";
+    const featuredSection = document.getElementById("featured-movies-section");
+    const genresSection = document.getElementById("genres-section");
+    const topRatedSection = document.getElementById("top-rated-movies-section");
+
+    if (featuredSection) featuredSection.style.display = "none";
+    if (genresSection) genresSection.style.display = "none";
+    if (topRatedSection) topRatedSection.style.display = "none";
 
     this.main.insertAdjacentHTML("beforeend", movieDetailComponent);
+
 
     const movie = await this.api.searchMovies(title);
     if (!movie || movie.length === 0) {
@@ -222,9 +230,13 @@ class App {
       detailSection.remove();
     }
     this.resultsContainer.style.display = "";
-    this.featuredMoviesContainer.style.display = "";
-    this.genresList.style.display = "";
-    this.topRatedMoviesContainer.style.display = "";
+    const featuredSection = document.getElementById("featured-movies-section");
+    const genresSection = document.getElementById("genres-section");
+    const topRatedSection = document.getElementById("top-rated-movies-section");
+
+    if (featuredSection) featuredSection.style.display = "";
+    if (genresSection) genresSection.style.display = "";
+    if (topRatedSection) topRatedSection.style.display = "";
   }
 
   async handleSearch() {
@@ -287,13 +299,35 @@ class App {
     this.genresList.innerHTML = genres
       .map(
         (genre) => `
-      <li class="genre-item">
-        <img src="https://via.placeholder.com/100x150?text=${encodeURIComponent(genre.name)}" alt="${genre.name}" />
+      <li class="genre-item" data-genre-id="${genre.id}">
         <span>${genre.name}</span>
       </li>
     `,
       )
       .join("");
+
+    // Add click event listeners to genre items
+    this.genresList.querySelectorAll(".genre-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const genreId = item.getAttribute("data-genre-id");
+        this.handleGenreClick(genreId);
+      });
+    });
+  }
+
+  async handleGenreClick(genreId) {
+    this.resultsContainer.innerHTML = "<p>Loading...</p>";
+    this.resultsContainer.style.display = "";
+    const featuredSection = document.getElementById("featured-movies-section");
+    const genresSection = document.getElementById("genres-section");
+    const topRatedSection = document.getElementById("top-rated-movies-section");
+
+    if (featuredSection) featuredSection.style.display = "none";
+    if (genresSection) genresSection.style.display = "none";
+    if (topRatedSection) topRatedSection.style.display = "none";
+
+    const movies = await this.api.getMoviesByGenre(genreId);
+    this.renderResults(movies);
   }
 
   async loadHomePageSections() {

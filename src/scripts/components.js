@@ -3,10 +3,10 @@ export const headerComponent = `
     <h1>LMDB</h1>
     <nav>
       <ul class="nav-list">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Movies</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#featured-movies-section">Movies</a></li>
         <li><a href="#">TV Shows</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="../about.html">About</a></li>
       </ul>
     </nav>
   </header>
@@ -89,4 +89,31 @@ export const streamingPlatformComponent = (platform) => `
   <a href="${platform.url}" target="_blank" rel="noopener noreferrer" class="streaming-link">
     <img src="${platform.logo_url}" alt="${platform.name}" title="${platform.name}" />
   </a>
+`;
+
+// New component for About section
+export const aboutComponent = `
+  <section id="about-section" class="about-section">
+    <h2>About LMDB (Laala Movie Database)</h2>
+    <p>Welcome to LMDB, your ultimate movie companion platform designed to bring the magic of cinema right to your fingertips.</p>
+    <p>Our mission is to make movie discovery effortless and enjoyable by providing smart search, personalized recommendations, authentic reviews, and up-to-date streaming information—all in one place.</p>
+    <h3>Key Features</h3>
+    <ul>
+      <li><strong>Smart Search:</strong> Quickly find movies and TV shows by title with accurate and fast results.</li>
+      <li><strong>Personalized Recommendations:</strong> Discover new favorites based on your viewing preferences.</li>
+      <li><strong>Detailed Reviews:</strong> Read and share honest reviews from fellow movie lovers.</li>
+      <li><strong>Streaming Info:</strong> Know exactly where to watch your favorite titles across popular platforms.</li>
+      <li><strong>Favorites List:</strong> Save and manage your must-watch list easily with local storage.</li>
+      <li><strong>Responsive & Animated UI:</strong> Enjoy a modern, visually rich experience on any device.</li>
+    </ul>
+    <p>Created by movie lovers, for movie lovers. Dive in and explore the world of entertainment with LMDB!</p>
+  </section>
+`;
+
+// New component for TV Shows section (placeholder)
+export const tvShowsComponent = `
+  <section id="tv-shows-section" class="tv-shows-section">
+    <h2>TV Shows</h2>
+    <p>This section is coming soon. Stay tuned for TV show search and details!</p>
+  </section>
 `;
