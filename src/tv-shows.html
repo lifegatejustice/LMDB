@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LMDB - TV Shows</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+  <main>
+    <section id="search-section">
+      <form id="search-form" aria-label="Search TV shows">
+        <input type="text" id="search-input" placeholder="Search for TV shows..." aria-label="Search input" required />
+        <button type="submit" id="search-button">Search</button>
+      </form>
+    </section>
+    <section id="results"></section>
+  </main>
+  <div id="footer-container"></div>
+  <script type="module" src="scripts/tvshows.js"></script>
+</body>
+</html>
