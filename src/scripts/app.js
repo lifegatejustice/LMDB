@@ -1,9 +1,12 @@
 import { TMDbAPI } from "./api.js";
-import {
-  movieDetailComponent,
-  castMemberComponent,
-  streamingPlatformComponent,
-} from "./components.js";
+
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
 
 class App {
   constructor() {
@@ -26,226 +29,260 @@ class App {
       e.preventDefault();
       this.handleSearch();
     });
-
-    this.resultsContainer.addEventListener("click", (e) => {
-      const movieCard = e.target.closest(".movie-card");
-      if (movieCard) {
-        const movieTitle = movieCard.querySelector(".movie-title").textContent;
-        this.handleMovieClick(movieTitle);
-      }
-    });
-
-    this.featuredMoviesContainer.addEventListener("click", (e) => {
-      const movieCard = e.target.closest(".movie-card");
-      if (movieCard) {
-        const movieTitle = movieCard.querySelector(".movie-title").textContent;
-        this.handleMovieClick(movieTitle);
-      }
-    });
-
-    this.topRatedMoviesContainer.addEventListener("click", (e) => {
-      const movieCard = e.target.closest(".movie-card");
-      if (movieCard) {
-        const movieTitle = movieCard.querySelector(".movie-title").textContent;
-        this.handleMovieClick(movieTitle);
-      }
-    });
-
-    const header = document.querySelector("header");
-    header.addEventListener("click", (e) => {
-      if (e.target.tagName === "A") {
-        const href = e.target.getAttribute("href");
-        if (href === "#" || href === null) {
-          e.preventDefault();
-          const linkText = e.target.textContent.toLowerCase();
-          if (linkText === "home") {
-            this.handleBack();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          } else if (linkText === "movies") {
-            const featuredSection = document.getElementById("featured-movies-section");
-            if (featuredSection) {
-              featuredSection.scrollIntoView({ behavior: "smooth" });
-            }
-          } else if (linkText === "tv shows") {
-            this.showTVShowsSection();
-          } else if (linkText === "about") {
-            this.showAboutSection();
-          }
-        }
-      }
-    });
-
-    this.main.addEventListener("click", (e) => {
-      if (e.target.id === "back-button") {
-        this.handleBack();
-      } else if (e.target.id === "favorite-button") {
-        this.toggleFavorite();
-      }
-    });
-  }
-
-  loadFavorites() {
-    const favs = localStorage.getItem("favorites");
-    return favs ? JSON.parse(favs) : [];
-  }
-
-  saveFavorites() {
-    localStorage.setItem("favorites", JSON.stringify(this.favorites));
-  }
-
-  toggleFavorite() {
-    if (!this.currentMovie) return;
-    const index = this.favorites.findIndex(
-      (m) => m.id === this.currentMovie.id,
-    );
-    if (index === -1) {
-      this.favorites.push(this.currentMovie);
-      alert("Added to favorites");
-    } else {
-      this.favorites.splice(index, 1);
-      alert("Removed from favorites");
-    }
-    this.saveFavorites();
-    this.renderFavoriteButton();
-  }
-
-  renderFavoriteButton() {
-    const favButton = document.getElementById("favorite-button");
-    if (!favButton || !this.currentMovie) return;
-    const isFav = this.favorites.some((m) => m.id === this.currentMovie.id);
-    favButton.textContent = isFav ? "Remove from Favorites" : "Add to Favorites";
-  }
-
-  async handleMovieClick(title) {
-    this.resultsContainer.style.display = "none";
-    const featuredSection = document.getElementById("featured-movies-section");
-    const genresSection = document.getElementById("genres-section");
-    const topRatedSection = document.getElementById("top-rated-movies-section");
-
-    if (featuredSection) featuredSection.style.display = "none";
-    if (genresSection) genresSection.style.display = "none";
-    if (topRatedSection) topRatedSection.style.display = "none";
-
-    this.main.insertAdjacentHTML("beforeend", movieDetailComponent);
-
-
-    const movie = await this.api.searchMovies(title);
-    if (!movie || movie.length === 0) {
-      alert("Movie details not found");
-      this.handleBack();
-      return;
-    }
-    const movieId = movie[0].id;
-    const details = await this.api.getMovieDetails(movieId);
-    if (!details) {
-      alert("Movie details not found");
-      this.handleBack();
-      return;
-    }
-    this.currentMovie = details;
-    this.renderMovieDetails(details);
-  }
-
-  renderMovieDetails(details) {
-    document.getElementById("detail-poster").src = details.poster_path
-      ? "https://image.tmdb.org/t/p/w500" + details.poster_path
-      : "https://via.placeholder.com/500x750?text=No+Image";
-    document.getElementById("detail-poster").alt = details.title + " poster";
-    document.getElementById("detail-title").textContent = details.title;
-    document.getElementById("detail-genres").textContent = details.genres
-      .map((g) => g.name)
-      .join(", ");
-    document.getElementById("detail-release-date").textContent =
-      "Release Date: " + (details.release_date || "N/A");
-    document.getElementById("detail-overview").textContent = details.overview;
-    document.getElementById("detail-rating").textContent =
-      "Rating: " + (details.vote_average || "N/A");
-
-    this.renderStreamingAvailability(details.id);
-    this.renderTrailer(details.videos);
-    this.renderCast(details.credits.cast);
-
-    this.renderFavoriteButton();
-  }
-
-  async renderStreamingAvailability(movieId) {
-    const container = document.getElementById("streaming-availability");
-    container.innerHTML = "<p>Loading streaming availability...</p>";
-
-    // Placeholder: Implement Watchmode API call here
-    // For now, show a placeholder message
-    container.innerHTML = "<p>Streaming availability coming soon.</p>";
-  }
-
-  renderTrailer(videos) {
-    const container = document.getElementById("trailer-container");
-    container.innerHTML = "";
-
-    if (!videos || !videos.results) {
-      container.innerHTML = "<p>No trailer available.</p>";
-      return;
-    }
-
-    const trailer = videos.results.find(
-      (video) => video.type === "Trailer" && video.site === "YouTube",
-    );
-
-    if (!trailer) {
-      container.innerHTML = "<p>No trailer available.</p>";
-      return;
-    }
-
-    const iframe = document.createElement("iframe");
-    iframe.width = "560";
-    iframe.height = "315";
-    iframe.src = `https://www.youtube.com/embed/${trailer.key}`;
-    iframe.title = "YouTube video player";
-    iframe.frameBorder = "0";
-    iframe.allow =
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-    iframe.allowFullscreen = true;
-
-    container.appendChild(iframe);
-  }
-
-  renderCast(cast) {
-    const container = document.getElementById("cast-container");
-    container.innerHTML = "<h3>Cast</h3>";
-
-    if (!cast || cast.length === 0) {
-      container.innerHTML += "<p>No cast information available.</p>";
-      return;
-    }
-
-    const castHtml = cast
-      .slice(0, 10)
-      .map((member) => castMemberComponent(member))
-      .join("");
-    container.innerHTML += `<div class="cast-list">${castHtml}</div>`;
-  }
-
-  handleBack() {
-    const detailSection = document.getElementById("movie-detail");
-    if (detailSection) {
-      detailSection.remove();
-    }
-    this.resultsContainer.style.display = "";
-    const featuredSection = document.getElementById("featured-movies-section");
-    const genresSection = document.getElementById("genres-section");
-    const topRatedSection = document.getElementById("top-rated-movies-section");
-
-    if (featuredSection) featuredSection.style.display = "";
-    if (genresSection) genresSection.style.display = "";
-    if (topRatedSection) topRatedSection.style.display = "";
   }
 
   async handleSearch() {
     const query = this.searchInput.value.trim();
-    if (!query) return;
+    if (!query) {
+      this.resultsContainer.innerHTML = "";
+      this.showMainSections(true);
+      return;
+    }
 
     this.resultsContainer.innerHTML = "<p>Loading...</p>";
-    const movies = await this.api.searchMovies(query);
+    let movies;
+    try {
+      movies = await this.api.searchMovies(query);
+    } catch (error) {
+      this.resultsContainer.innerHTML = "<p>Error loading search results. Please try again later.</p>";
+      console.error("Search error:", error);
+      return;
+    }
     this.renderResults(movies);
+
+    // Show search results on top and hide other sections
+    this.showMainSections(false);
+
+    // Add click event listeners to movie cards for details
+    this.addMovieCardClickListeners();
+  }
+
+  showMainSections(show) {
+    const mainSections = [
+      this.featuredMoviesContainer.parentElement,
+      this.genresList.parentElement,
+      this.topRatedMoviesContainer.parentElement,
+      document.getElementById("favorites-section"),
+    ];
+    mainSections.forEach(section => {
+      section.style.display = show ? "block" : "none";
+    });
+    this.resultsContainer.style.display = show ? "none" : "block";
+  }
+
+  addMovieCardClickListeners() {
+    const containers = [
+      this.resultsContainer,
+      this.featuredMoviesContainer,
+      this.topRatedMoviesContainer,
+      document.getElementById("favorites-container"),
+    ];
+    containers.forEach(container => {
+      if (!container) return;
+      const movieCards = container.querySelectorAll(".movie-card");
+      movieCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const movieId = parseInt(card.getAttribute("data-id"));
+          if (movieId) {
+            this.showMovieDetails(movieId);
+          }
+        });
+      });
+    });
+  }
+
+  setupCarouselNavigation() {
+    const sections = [
+      { sectionId: "featured-movies", container: this.featuredMoviesContainer },
+      { sectionId: "top-rated-movies", container: this.topRatedMoviesContainer },
+      { sectionId: "favorites", container: document.getElementById("favorites-container") },
+    ];
+
+    sections.forEach(({ sectionId, container }) => {
+      if (!container) return;
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+
+      const prevBtn = section.querySelector(".carousel-button.prev");
+      const nextBtn = section.querySelector(".carousel-button.next");
+
+      if (prevBtn && nextBtn) {
+        prevBtn.addEventListener("click", () => {
+          container.scrollBy({ left: -300, behavior: "smooth" });
+        });
+        nextBtn.addEventListener("click", () => {
+          container.scrollBy({ left: 300, behavior: "smooth" });
+        });
+      }
+    });
+  }
+
+  async showMovieDetailsByIndex(index) {
+    const query = this.searchInput.value.trim();
+    if (!query) return;
+
+    const movies = await this.api.searchMovies(query);
+    const movie = movies[index];
+    if (!movie) return;
+
+    this.showMovieDetails(movie.id);
+  }
+
+  async showMovieDetails(movieId) {
+    let movieDetails, trailerKey, streamingProviders;
+    try {
+      // Fetch movie details from TMDb API
+      movieDetails = await this.api.getMovieDetails(movieId);
+      if (!movieDetails) throw new Error("No movie details found");
+
+      // Fetch trailer video key
+      trailerKey = await this.api.getMovieTrailerKey(movieId);
+
+      // Fetch streaming providers from Watchmode API
+      streamingProviders = await this.api.getStreamingProviders(movieId);
+    } catch (error) {
+      const movieDetailsSection = document.getElementById("movie-details-section");
+      movieDetailsSection.innerHTML = "<p>Error loading movie details. Please try again later.</p>";
+      movieDetailsSection.style.display = "block";
+      console.error("Movie details error:", error);
+      return;
+    }
+
+    // Render movie details
+    this.renderMovieDetails(movieDetails, trailerKey, streamingProviders);
+
+    // Hide other sections and show movie details section
+    this.toggleSections(false);
+  }
+
+  renderMovieDetails(details, trailerKey, streamingProviders) {
+    const movieDetailsSection = document.getElementById("movie-details-section");
+    const poster = movieDetailsSection.querySelector("#details-poster");
+    const title = movieDetailsSection.querySelector("#details-title");
+    const yearRuntimeGenres = movieDetailsSection.querySelector("#details-year-runtime-genres");
+    const description = movieDetailsSection.querySelector("#details-description");
+    const rating = movieDetailsSection.querySelector("#details-rating");
+    const cast = movieDetailsSection.querySelector("#details-cast");
+    const trailer = movieDetailsSection.querySelector("#details-trailer");
+    const providers = movieDetailsSection.querySelector("#details-streaming-providers");
+
+    poster.src = details.poster_path ? "https://image.tmdb.org/t/p/w500" + details.poster_path : "https://via.placeholder.com/500x750?text=No+Image";
+    poster.alt = details.title + " poster";
+    title.textContent = details.title;
+    yearRuntimeGenres.textContent = `${details.release_date ? details.release_date.split("-")[0] : "N/A"} | ${details.runtime ? details.runtime + " min" : "N/A"} | ${details.genres ? details.genres.map(g => g.name).join(", ") : "N/A"}`;
+    description.textContent = details.overview || "No description available.";
+    rating.textContent = `Rating: ${details.vote_average || "N/A"}`;
+    cast.textContent = `Cast: ${details.cast ? details.cast.slice(0, 5).map(c => c.name).join(", ") : "N/A"}`;
+
+    // Render trailer iframe if trailerKey exists
+    if (trailerKey) {
+      trailer.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${trailerKey}" frameborder="0" allowfullscreen title="Trailer"></iframe>`;
+    } else {
+      trailer.innerHTML = "<p>No trailer available.</p>";
+    }
+
+    // Render streaming providers logos or names
+    if (streamingProviders && streamingProviders.length > 0) {
+      providers.innerHTML = streamingProviders.map(p => `<img src="${p.logo_url}" alt="${p.name}" title="${p.name}" class="provider-logo" />`).join(" ");
+    } else {
+      providers.innerHTML = "<p>No streaming providers available.</p>";
+    }
+
+    movieDetailsSection.style.display = "block";
+  }
+
+  toggleSections(showMain = true) {
+    const sectionsToToggle = [
+      this.searchForm.parentElement,
+      this.resultsContainer,
+      this.featuredMoviesContainer.parentElement,
+      this.genresList.parentElement,
+      this.topRatedMoviesContainer.parentElement,
+    ];
+    sectionsToToggle.forEach(section => {
+      section.style.display = showMain ? "block" : "none";
+    });
+
+    const movieDetailsSection = document.getElementById("movie-details-section");
+    movieDetailsSection.style.display = showMain ? "none" : "block";
+  }
+
+  setupBackToSearch() {
+    const backButton = document.getElementById("back-to-search");
+    backButton.addEventListener("click", () => {
+      this.toggleSections(true);
+    });
+  }
+
+  loadFavorites() {
+    const favorites = this.getFavorites();
+    this.renderFavorites(favorites);
+    this.toggleSections(false);
+  }
+
+  getFavorites() {
+    const favoritesJSON = localStorage.getItem("favorites");
+    return favoritesJSON ? JSON.parse(favoritesJSON) : [];
+  }
+
+  saveFavorites(favorites) {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }
+
+  addFavorite(movie) {
+    const favorites = this.getFavorites();
+    if (!favorites.find((fav) => fav.id === movie.id)) {
+      favorites.push(movie);
+      this.saveFavorites(favorites);
+    }
+  }
+
+  removeFavorite(movieId) {
+    let favorites = this.getFavorites();
+    favorites = favorites.filter((fav) => fav.id !== movieId);
+    this.saveFavorites(favorites);
+  }
+
+  isFavorite(movieId) {
+    const favorites = this.getFavorites();
+    return favorites.some((fav) => fav.id === movieId);
+  }
+
+  renderFavorites(favorites) {
+    const favoritesContainer = document.getElementById("favorites-container");
+    if (!favorites || favorites.length === 0) {
+      favoritesContainer.innerHTML = "<p>No favorites added yet.</p>";
+      return;
+    }
+
+    favoritesContainer.innerHTML = favorites
+      .map(
+        (movie) => `
+      <div class="movie-card favorite" data-id="${movie.id}">
+        <img class="movie-poster" src="${
+          movie.poster_path
+            ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+            : "https://via.placeholder.com/500x750?text=No+Image"
+        }" alt="${movie.title} poster" />
+        <div class="movie-info">
+          <h3 class="movie-title">${movie.title}</h3>
+          <p class="movie-release-date">${movie.release_date || "N/A"}</p>
+          <button class="remove-favorite-button" aria-label="Remove from favorites">Remove</button>
+        </div>
+      </div>
+    `
+      )
+      .join("");
+
+    // Add event listeners for remove favorite buttons
+    favoritesContainer.querySelectorAll(".remove-favorite-button").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const movieCard = e.target.closest(".movie-card");
+        const movieId = parseInt(movieCard.getAttribute("data-id"));
+        this.removeFavorite(movieId);
+        this.loadFavorites();
+      });
+    });
   }
 
   renderResults(movies) {
@@ -254,19 +291,31 @@ class App {
       return;
     }
 
+    this.resultsContainer.setAttribute("aria-live", "polite");
+    this.resultsContainer.setAttribute("aria-atomic", "true");
+
     this.resultsContainer.innerHTML = movies
       .map(
         (movie) => `
-      <div class="movie-card">
-        <img class="movie-poster" src="${movie.poster_path ? "https://image.tmdb.org/t/p/w500" + movie.poster_path : "https://via.placeholder.com/500x750?text=No+Image"}" alt="${movie.title} poster" />
+      <div class="movie-card" data-id="${movie.id}" role="button" tabindex="0" aria-pressed="${this.isFavorite(movie.id) ? "true" : "false"}">
+        <img class="movie-poster" src="${
+          movie.poster_path
+            ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+            : "https://via.placeholder.com/500x750?text=No+Image"
+        }" alt="${movie.title} poster" />
         <div class="movie-info">
           <h3 class="movie-title">${movie.title}</h3>
           <p class="movie-release-date">${movie.release_date || "N/A"}</p>
+          <button class="favorite-button" aria-label="Toggle favorite">${
+            this.isFavorite(movie.id) ? "★" : "☆"
+          }</button>
         </div>
       </div>
     `,
       )
       .join("");
+
+    this.addFavoriteButtonListeners();
   }
 
   renderMovies(movies, container) {
@@ -278,16 +327,51 @@ class App {
     container.innerHTML = movies
       .map(
         (movie) => `
-      <div class="movie-card">
-        <img class="movie-poster" src="${movie.poster_path ? "https://image.tmdb.org/t/p/w500" + movie.poster_path : "https://via.placeholder.com/500x750?text=No+Image"}" alt="${movie.title} poster" />
+      <div class="movie-card" data-id="${movie.id}">
+        <img class="movie-poster" src="${
+          movie.poster_path
+            ? "https://image.tmdb.org/t/p/w500" + movie.poster_path
+            : "https://via.placeholder.com/500x750?text=No+Image"
+        }" alt="${movie.title} poster" />
         <div class="movie-info">
           <h3 class="movie-title">${movie.title}</h3>
           <p class="movie-release-date">${movie.release_date || "N/A"}</p>
+          <button class="favorite-button" aria-label="Toggle favorite">${
+            this.isFavorite(movie.id) ? "★" : "☆"
+          }</button>
         </div>
       </div>
     `,
       )
       .join("");
+
+    this.addFavoriteButtonListeners(container);
+  }
+
+  addFavoriteButtonListeners(container = this.resultsContainer) {
+    const favoriteButtons = container.querySelectorAll(".favorite-button");
+    favoriteButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const movieCard = e.target.closest(".movie-card");
+        const movieId = parseInt(movieCard.getAttribute("data-id"));
+        const movie = {
+          id: movieId,
+          title: movieCard.querySelector(".movie-title").textContent,
+          release_date: movieCard.querySelector(".movie-release-date").textContent,
+          poster_path: movieCard.querySelector(".movie-poster").src.includes("placeholder")
+            ? null
+            : movieCard.querySelector(".movie-poster").src.replace("https://image.tmdb.org/t/p/w500", ""),
+        };
+        if (this.isFavorite(movieId)) {
+          this.removeFavorite(movieId);
+          e.target.textContent = "☆";
+        } else {
+          this.addFavorite(movie);
+          e.target.textContent = "★";
+        }
+      });
+    });
   }
 
   renderGenres(genres) {
@@ -340,10 +424,14 @@ class App {
     this.renderMovies(featuredMovies, this.featuredMoviesContainer);
     this.renderGenres(genres);
     this.renderMovies(topRatedMovies, this.topRatedMoviesContainer);
+
+    this.setupCarouselNavigation();
   }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = new App();
   app.loadHomePageSections();
+  app.setupBackToSearch();
 });
