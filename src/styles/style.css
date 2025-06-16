@@ -1,16 +1,16 @@
 /* General styles */
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #121212;
   color: white;
 }
-main{
-  padding: 2rem;
+main {
+ 
 }
 
 a {
-  color: #E50914;
+  color: #e50914;
   text-decoration: none;
 }
 
@@ -20,7 +20,7 @@ a:hover {
 
 /* Header styles */
 header {
-  background-color: #1C1C1C;
+  background-color: #1c1c1c;
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
@@ -28,7 +28,7 @@ header {
 }
 
 header h1 {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 1.8rem;
   margin: 0;
 }
@@ -48,7 +48,7 @@ header h1 {
 
 /* Footer styles */
 footer {
-  background-color: #1C1C1C;
+  background-color: #1c1c1c;
   text-align: center;
   padding: 1rem;
   font-size: 0.9rem;
@@ -58,7 +58,7 @@ footer {
 
 /* Movie cards */
 .movie-card {
-  background-color: #1C1C1C;
+  background-color: #1c1c1c;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
@@ -85,22 +85,22 @@ footer {
 }
 
 #search-form {
-      display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: nowrap;
 }
 
-#search-form button{
-   width: 20vh;
-  height: 5vh
+#search-form button {
+  width: 20vh;
+  height: 5vh;
 }
 
 input {
   width: 100vh;
-  height: 4vh
+  height: 4vh;
 }
 
 #search-section {
@@ -109,7 +109,7 @@ input {
 }
 
 .movie-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 1.1rem;
   margin: 0.3rem 0;
 }
@@ -125,19 +125,21 @@ section {
 }
 
 h2 {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
 /* Movie detail view */
 .movie-detail {
-  background-color: #1C1C1C;
+  background-color: #1c1c1c;
   padding: 1rem;
   border-radius: 8px;
   margin: 2rem auto;
   max-width: 900px;
   color: white;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
 }
 
 .movie-detail-content {
@@ -158,7 +160,7 @@ h2 {
 }
 
 .detail-info h2 {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 2rem;
   margin-top: 0;
 }
@@ -228,7 +230,7 @@ h2 {
 #favorite-button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  background-color: #E50914;
+  background-color: #e50914;
   border: none;
   border-radius: 4px;
   color: white;
@@ -239,6 +241,47 @@ h2 {
 
 #favorite-button:hover {
   background-color: #b0070f;
+}
+
+/* Loading spinner */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: #e50914;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+  display: block;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Spin animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade in/out for sections */
+.fade-in {
+  animation: fadeIn 0.5s forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
 }
 
 /* Responsive */
@@ -258,5 +301,232 @@ h2 {
 
   .cast-member {
     width: 80px;
+  }
+}
+
+/* General button styles */
+button,
+.button {
+  background-color: #e50914; /* Netflix Red */
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+.button:hover,
+button:focus,
+.button:focus {
+  background-color: #b0060f;
+  outline: none;
+}
+
+/* Search button */
+#search-button {
+  background-color: #e50914;
+  color: white;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+#search-button:hover,
+#search-button:focus {
+  background-color: #b0060f;
+  outline: none;
+}
+
+/* Favorite button */
+#favorite-button {
+  background-color: #e50914;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  margin-top: 1em;
+  transition: background-color 0.3s ease;
+}
+
+#favorite-button:hover,
+#favorite-button:focus {
+  background-color: #b0060f;
+  outline: none;
+}
+
+/* Genre filter buttons */
+.genre-item {
+  display: inline-block;
+  margin: 0.5em;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+  background-color: #1c1c1c;
+  color: white;
+  text-align: center;
+  width: 100px;
+}
+
+.genre-item:hover,
+.genre-item:focus {
+  transform: scale(1.05);
+  outline: none;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.7);
+}
+
+.genre-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid #e50914;
+}
+
+.genre-item span {
+  display: block;
+  padding: 0.5em 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+}
+
+/* Navigation links styled as buttons */
+.nav-list a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5em 1em;
+  display: inline-block;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  border-radius: 4px;
+}
+
+.nav-list a:hover,
+.nav-list a:focus {
+  background-color: #e50914;
+  outline: none;
+}
+
+/* Spinner */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: #e50914;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  margin: 1em auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Carousel container */
+.movies-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+/* Movie card width for 4 cards per view on desktop */
+@media (min-width: 769px) {
+  .movie-card {
+    flex: 0 0 calc((100% - 3rem) / 4); /* 4 cards with 1rem gap between */
+    max-width: calc((100% - 3rem) / 4);
+  }
+}
+
+/* Movie card width for 3 cards per view on tablet */
+@media (min-width: 426px) and (max-width: 768px) {
+  .movie-card {
+    flex: 0 0 calc((100% - 2rem) / 3); /* 3 cards with 1rem gap between */
+    max-width: calc((100% - 2rem) / 3);
+  }
+}
+
+/* Movie card width for 2 cards per view on mobile */
+@media (max-width: 425px) {
+  .movie-card {
+    flex: 0 0 calc((100% - 1rem) / 2); /* 2 cards with 1rem gap between */
+    max-width: calc((100% - 1rem) / 2);
+  }
+}
+
+/* Hide scrollbar for WebKit browsers */
+.movies-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for other browsers */
+.movies-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Carousel navigation buttons */
+.carousel-button {
+  background-color: rgba(28, 28, 28, 0.8);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border-radius: 50%;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-button:hover,
+.carousel-button:focus {
+  background-color: #e50914;
+  outline: none;
+}
+
+/* Positioning for prev and next buttons */
+.carousel-button.prev {
+  left: 0.5rem;
+}
+
+.carousel-button.prev-toprated {
+  left: 0.5rem;
+}
+
+.carousel-button.next-toprated {
+  right: 0.5rem;
+}
+
+.carousel-button.next {
+  right: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .carousel-button {
+    display: none;
   }
 }

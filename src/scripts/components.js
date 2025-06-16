@@ -3,11 +3,11 @@ export const headerComponent = `
     <h1>LMDB</h1>
     <nav role="navigation" aria-label="Main navigation">
       <ul class="nav-list">
-        <li><a href="#" id="nav-home">Home</a></li>
-        <li><a href="#" id="nav-movies">Movies</a></li>
-        <li><a href="#" id="nav-tvshows">TV Shows</a></li>
-        <li><a href="#" id="nav-about">About</a></li>
-        <li><a href="#" id="nav-favorites">Favorites</a></li>
+        <li><a href="index.html" id="nav-home">Home</a></li>
+        <li><a href="index.html#featured-movies" id="nav-movies">Movies</a></li>
+        <li><a href="tv-shows.html" id="nav-tvshows">TV Shows</a></li>
+        <li><a href="about.html" id="nav-about">About</a></li>
+        <li><a href="favorites.html" id="nav-favorites">Favorites</a></li>
       </ul>
     </nav>
   </header>
@@ -49,8 +49,10 @@ export const genresComponent = `
 `;
 
 export const topRatedMoviesComponent = `
-  <section id="top-rated-movies">
+  <section id="top-rated-movies" style="position: relative;">
     <h2>Top Rated Movies</h2>
+    <button class="carousel-button prev-toprated" aria-label="Previous top rated movies">&#9664;</button>
+    <button class="carousel-button next-toprated" aria-label="Next top rated movies">&#9654;</button>
     <div class="movies-container" id="top-rated-movies-container">
       <!-- Top rated movies will be rendered here -->
     </div>

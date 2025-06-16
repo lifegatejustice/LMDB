@@ -243,7 +243,7 @@ class App {
     const query = this.searchInput.value.trim();
     if (!query) return;
 
-    this.resultsContainer.innerHTML = "<p>Loading...</p>";
+    this.resultsContainer.innerHTML = '<div class="spinner"></div>';
     const movies = await this.api.searchMovies(query);
     this.renderResults(movies);
   }
@@ -296,13 +296,39 @@ class App {
       return;
     }
 
+    const genreImages = {
+      Action: "https://example.com/images/action.jpg",
+      Adventure: "https://example.com/images/adventure.jpg",
+      Animation: "https://example.com/images/animation.jpg",
+      Comedy: "https://example.com/images/comedy.jpg",
+      Crime: "https://example.com/images/crime.jpg",
+      Documentary: "https://example.com/images/documentary.jpg",
+      Drama: "https://example.com/images/drama.jpg",
+      Family: "https://example.com/images/family.jpg",
+      Fantasy: "https://example.com/images/fantasy.jpg",
+      History: "https://example.com/images/history.jpg",
+      Horror: "https://example.com/images/horror.jpg",
+      Music: "https://example.com/images/music.jpg",
+      Mystery: "https://example.com/images/mystery.jpg",
+      Romance: "https://example.com/images/romance.jpg",
+      ScienceFiction: "https://example.com/images/scifi.jpg",
+      TVMovie: "https://example.com/images/tvmovie.jpg",
+      Thriller: "https://example.com/images/thriller.jpg",
+      War: "https://example.com/images/war.jpg",
+      Western: "https://example.com/images/western.jpg",
+    };
+
     this.genresList.innerHTML = genres
       .map(
-        (genre) => `
+        (genre) => {
+          const imageUrl = genreImages[genre.name.replace(/\s/g, "")] || "https://via.placeholder.com/100x150?text=" + encodeURIComponent(genre.name);
+          return `
       <li class="genre-item" data-genre-id="${genre.id}">
+        <img src="${imageUrl}" alt="${genre.name}" />
         <span>${genre.name}</span>
       </li>
-    `,
+    `;
+        }
       )
       .join("");
 
@@ -316,7 +342,7 @@ class App {
   }
 
   async handleGenreClick(genreId) {
-    this.resultsContainer.innerHTML = "<p>Loading...</p>";
+    this.resultsContainer.innerHTML = '<div class="spinner"></div>';
     this.resultsContainer.style.display = "";
     const featuredSection = document.getElementById("featured-movies-section");
     const genresSection = document.getElementById("genres-section");
@@ -341,9 +367,79 @@ class App {
     this.renderGenres(genres);
     this.renderMovies(topRatedMovies, this.topRatedMoviesContainer);
   }
+
+  setupCarousel(containerId, prevBtnClass, nextBtnClass) {
+    const container = document.getElementById(containerId);
+    const prevBtn = container.parentElement.querySelector(`.${prevBtnClass}`);
+    const nextBtn = container.parentElement.querySelector(`.${nextBtnClass}`);
+
+    if (!container || !prevBtn || !nextBtn) return;
+
+    prevBtn.addEventListener("click", () => {
+      container.scrollBy({
+        left: -container.clientWidth,
+        behavior: "smooth",
+      });
+    });
+
+    nextBtn.addEventListener("click", () => {
+      container.scrollBy({
+        left: container.clientWidth,
+        behavior: "smooth",
+      });
+    });
+
+    // Swipe support for mobile
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    container.addEventListener("mousedown", (e) => {
+      isDown = true;
+      container.classList.add("active");
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener("mouseleave", () => {
+      isDown = false;
+      container.classList.remove("active");
+    });
+
+    container.addEventListener("mouseup", () => {
+      isDown = false;
+      container.classList.remove("active");
+    });
+
+    container.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2; //scroll-fast
+      container.scrollLeft = scrollLeft - walk;
+    });
+
+    // Touch events for mobile
+    container.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener("touchmove", (e) => {
+      const x = e.touches[0].pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    });
+  }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = new App();
   app.loadHomePageSections();
+
+  // Setup carousels for sections
+  app.setupCarousel("featured-movies-container", "prev", "next");
+  app.setupCarousel("genres-list", "prev-genres", "next-genres");
+  app.setupCarousel("top-rated-movies-container", "prev-toprated", "next-toprated");
 });
