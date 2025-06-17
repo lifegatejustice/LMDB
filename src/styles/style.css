@@ -445,27 +445,169 @@ button:focus,
 }
 
 /* Movie card width for 4 cards per view on desktop */
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .movie-card {
     flex: 0 0 calc((100% - 3rem) / 4); /* 4 cards with 1rem gap between */
     max-width: calc((100% - 3rem) / 4);
   }
+
+  #hamburger-button {
+    display: none;
+  }
+  .nav-menu {
+    position: static;
+    width: auto;
+    height: auto;
+    display: flex;
+    background: none;
+    padding: 0;
+    right: 0;
+  }
+  .nav-list {
+    display: none;
+    gap: 1rem;
+  }
+
 }
 
+
+/* Base reset */
+header {
+  position: relative;
+  padding: 1rem;
+  background-color: #111;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#hamburger-button {
+  font-size: 1.5rem;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.nav-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 70%;
+  height: 100%;
+  background-color: #222;
+  transition: right 0.3s ease-in-out;
+  padding-top: 4rem;
+  z-index: 1000;
+}
+
+.nav-menu.open {
+  right: 0;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list li {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.nav-list a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+#hamburger-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+
+#hamburger-button .bar {
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+#hamburger-button.open .bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+#hamburger-button.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+#hamburger-button.open .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Optional: hide nav on large screens if you have a desktop version */
+@media (min-width: 768px) {
+  #hamburger-button {
+    display: none;
+  }
+  .nav-menu {
+    position: fixed;
+    width: auto;
+    height: auto;
+    display: flex;
+    background: none;
+    padding: 0;
+    right: 0;
+  }
+  .nav-list {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+
+
+
 /* Movie card width for 3 cards per view on tablet */
-@media (min-width: 426px) and (max-width: 768px) {
+@media (min-width: 769px) and (max-width: 1024px) {
   .movie-card {
     flex: 0 0 calc((100% - 2rem) / 3); /* 3 cards with 1rem gap between */
     max-width: calc((100% - 2rem) / 3);
   }
 }
 
+
+button{
+  margin-bottom: 10px;
+}
 /* Movie card width for 2 cards per view on mobile */
-@media (max-width: 425px) {
+@media (max-width: 768px) {
   .movie-card {
     flex: 0 0 calc((100% - 1rem) / 2); /* 2 cards with 1rem gap between */
     max-width: calc((100% - 1rem) / 2);
   }
+  .nav-menu.open, .nav-list{
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+  
 }
 
 /* Hide scrollbar for WebKit browsers */

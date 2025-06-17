@@ -1,7 +1,12 @@
 export const headerComponent = `
   <header role="banner">
     <h1>LMDB</h1>
-    <nav role="navigation" aria-label="Main navigation">
+    <button id="hamburger-button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <nav role="navigation" aria-label="Main navigation" id="nav-menu" class="nav-menu">
       <ul class="nav-list">
         <li><a href="index.html" id="nav-home">Home</a></li>
         <li><a href="index.html#featured-movies" id="nav-movies">Movies</a></li>
@@ -13,9 +18,10 @@ export const headerComponent = `
   </header>
 `;
 
+
  export const footerComponent = `
   <footer>
-    &copy; 2025 Movie Companion App
+    &copy; 2025 LMDB
   </footer>
 `;
 
@@ -125,9 +131,9 @@ export const tvShowsComponent = `
 
 export const movieDetailsComponent = `
   <section id="movie-details" aria-live="polite" aria-atomic="true">
-    <button id="back-to-search" aria-label="Back to search results">Back to Search</button>
+
     <div class="movie-details-content">
-      <img id="details-poster" alt="Movie poster" />
+    
       <div class="details-info">
         <h2 id="details-title"></h2>
         <p id="details-year-runtime-genres"></p>
@@ -143,9 +149,44 @@ export const movieDetailsComponent = `
 
 export const favoritesComponent = `
   <section id="favorites" aria-live="polite" aria-atomic="true">
-    <h2>Your Favorites</h2>
+    
     <div id="favorites-container" class="movies-container">
       <!-- Favorite movies will be rendered here -->
     </div>
   </section>
 `;
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburgerButton = document.getElementById("hamburger-button");
+  const navMenu = document.getElementById("nav-menu");
+
+function toggleMenu() {
+  const isOpen = navMenu.classList.toggle("open");
+  hamburgerButton.classList.toggle("open");
+  hamburgerButton.setAttribute("aria-expanded", isOpen);
+}
+
+navMenu.classList.remove("open");
+hamburgerButton.classList.remove("open");
+hamburgerButton.setAttribute("aria-expanded", false);
+
+
+  hamburgerButton.addEventListener("click", toggleMenu);
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (event) => {
+    if (!navMenu.contains(event.target) && !hamburgerButton.contains(event.target)) {
+      navMenu.classList.remove("open");
+      hamburgerButton.setAttribute("aria-expanded", false);
+    }
+  });
+
+  // Optional: close on nav link click
+  document.querySelectorAll(".nav-list a").forEach(link =>
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+      hamburgerButton.setAttribute("aria-expanded", false);
+    })
+  );
+});

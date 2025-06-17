@@ -243,9 +243,8 @@ class App {
     const query = this.searchInput.value.trim();
     if (!query) return;
 
-    this.resultsContainer.innerHTML = '<div class="spinner"></div>';
-    const movies = await this.api.searchMovies(query);
-    this.renderResults(movies);
+    // Redirect to search results page with query parameter
+    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
   }
 
   renderResults(movies) {
