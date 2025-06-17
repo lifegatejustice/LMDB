@@ -62,7 +62,9 @@ class App {
             this.handleBack();
             window.scrollTo({ top: 0, behavior: "smooth" });
           } else if (linkText === "movies") {
-            const featuredSection = document.getElementById("featured-movies-section");
+            const featuredSection = document.getElementById(
+              "featured-movies-section",
+            );
             if (featuredSection) {
               featuredSection.scrollIntoView({ behavior: "smooth" });
             }
@@ -113,7 +115,9 @@ class App {
     const favButton = document.getElementById("favorite-button");
     if (!favButton || !this.currentMovie) return;
     const isFav = this.favorites.some((m) => m.id === this.currentMovie.id);
-    favButton.textContent = isFav ? "Remove from Favorites" : "Add to Favorites";
+    favButton.textContent = isFav
+      ? "Remove from Favorites"
+      : "Add to Favorites";
   }
 
   async handleMovieClick(title) {
@@ -127,7 +131,6 @@ class App {
     if (topRatedSection) topRatedSection.style.display = "none";
 
     this.main.insertAdjacentHTML("beforeend", movieDetailComponent);
-
 
     const movie = await this.api.searchMovies(title);
     if (!movie || movie.length === 0) {
@@ -318,17 +321,18 @@ class App {
     };
 
     this.genresList.innerHTML = genres
-      .map(
-        (genre) => {
-          const imageUrl = genreImages[genre.name.replace(/\s/g, "")] || "https://via.placeholder.com/100x150?text=" + encodeURIComponent(genre.name);
-          return `
+      .map((genre) => {
+        const imageUrl =
+          genreImages[genre.name.replace(/\s/g, "")] ||
+          "https://via.placeholder.com/100x150?text=" +
+            encodeURIComponent(genre.name);
+        return `
       <li class="genre-item" data-genre-id="${genre.id}">
         <img src="${imageUrl}" alt="${genre.name}" />
         <span>${genre.name}</span>
       </li>
     `;
-        }
-      )
+      })
       .join("");
 
     // Add click event listeners to genre items
@@ -430,7 +434,6 @@ class App {
       container.scrollLeft = scrollLeft - walk;
     });
   }
-
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -440,5 +443,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Setup carousels for sections
   app.setupCarousel("featured-movies-container", "prev", "next");
   app.setupCarousel("genres-list", "prev-genres", "next-genres");
-  app.setupCarousel("top-rated-movies-container", "prev-toprated", "next-toprated");
+  app.setupCarousel(
+    "top-rated-movies-container",
+    "prev-toprated",
+    "next-toprated",
+  );
 });

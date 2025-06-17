@@ -18,8 +18,7 @@ export const headerComponent = `
   </header>
 `;
 
-
- export const footerComponent = `
+export const footerComponent = `
   <footer>
     &copy; 2025 LMDB
   </footer>
@@ -156,37 +155,38 @@ export const favoritesComponent = `
   </section>
 `;
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const hamburgerButton = document.getElementById("hamburger-button");
   const navMenu = document.getElementById("nav-menu");
 
-function toggleMenu() {
-  const isOpen = navMenu.classList.toggle("open");
-  hamburgerButton.classList.toggle("open");
-  hamburgerButton.setAttribute("aria-expanded", isOpen);
-}
+  function toggleMenu() {
+    const isOpen = navMenu.classList.toggle("open");
+    hamburgerButton.classList.toggle("open");
+    hamburgerButton.setAttribute("aria-expanded", isOpen);
+  }
 
-navMenu.classList.remove("open");
-hamburgerButton.classList.remove("open");
-hamburgerButton.setAttribute("aria-expanded", false);
-
+  navMenu.classList.remove("open");
+  hamburgerButton.classList.remove("open");
+  hamburgerButton.setAttribute("aria-expanded", false);
 
   hamburgerButton.addEventListener("click", toggleMenu);
 
   // Close menu when clicking outside
   document.addEventListener("click", (event) => {
-    if (!navMenu.contains(event.target) && !hamburgerButton.contains(event.target)) {
+    if (
+      !navMenu.contains(event.target) &&
+      !hamburgerButton.contains(event.target)
+    ) {
       navMenu.classList.remove("open");
       hamburgerButton.setAttribute("aria-expanded", false);
     }
   });
 
   // Optional: close on nav link click
-  document.querySelectorAll(".nav-list a").forEach(link =>
+  document.querySelectorAll(".nav-list a").forEach((link) =>
     link.addEventListener("click", () => {
       navMenu.classList.remove("open");
       hamburgerButton.setAttribute("aria-expanded", false);
-    })
+    }),
   );
 });

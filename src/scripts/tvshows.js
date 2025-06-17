@@ -30,7 +30,8 @@ class TVShowsApp {
     this.resultsContainer.addEventListener("click", (e) => {
       const tvShowCard = e.target.closest(".movie-card");
       if (tvShowCard) {
-        const tvShowTitle = tvShowCard.querySelector(".movie-title").textContent;
+        const tvShowTitle =
+          tvShowCard.querySelector(".movie-title").textContent;
         this.handleTVShowClick(tvShowTitle);
       }
     });
@@ -75,7 +76,9 @@ class TVShowsApp {
     const favButton = document.getElementById("favorite-button");
     if (!favButton || !this.currentTVShow) return;
     const isFav = this.favorites.some((m) => m.id === this.currentTVShow.id);
-    favButton.textContent = isFav ? "Remove from Favorites" : "Add to Favorites";
+    favButton.textContent = isFav
+      ? "Remove from Favorites"
+      : "Add to Favorites";
   }
 
   async handleTVShowClick(title) {
@@ -217,7 +220,7 @@ class TVShowsApp {
           <p class="movie-release-date">${show.first_air_date || "N/A"}</p>
         </div>
       </div>
-    `
+    `,
       )
       .join("");
   }

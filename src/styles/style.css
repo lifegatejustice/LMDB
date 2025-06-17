@@ -6,7 +6,6 @@ body {
   color: white;
 }
 main {
- 
 }
 
 a {
@@ -467,9 +466,7 @@ button:focus,
     display: none;
     gap: 1rem;
   }
-
 }
-
 
 /* Base reset */
 header {
@@ -537,7 +534,6 @@ header {
   z-index: 1001;
 }
 
-
 #hamburger-button .bar {
   width: 100%;
   height: 3px;
@@ -579,9 +575,6 @@ header {
   }
 }
 
-
-
-
 /* Movie card width for 3 cards per view on tablet */
 @media (min-width: 769px) and (max-width: 1024px) {
   .movie-card {
@@ -590,8 +583,7 @@ header {
   }
 }
 
-
-button{
+button {
   margin-bottom: 10px;
 }
 /* Movie card width for 2 cards per view on mobile */
@@ -600,14 +592,13 @@ button{
     flex: 0 0 calc((100% - 1rem) / 2); /* 2 cards with 1rem gap between */
     max-width: calc((100% - 1rem) / 2);
   }
-  .nav-menu.open, .nav-list{
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-  
+  .nav-menu.open,
+  .nav-list {
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 /* Hide scrollbar for WebKit browsers */

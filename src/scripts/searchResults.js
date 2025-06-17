@@ -1,10 +1,5 @@
 import { TMDbAPI } from "./api.js";
-import {
-  headerComponent,
-  footerComponent,
-} from "./components.js";
-
-
+import { headerComponent, footerComponent } from "./components.js";
 
 document.getElementById("header").innerHTML = headerComponent;
 
@@ -44,7 +39,7 @@ async function renderSearchResults(searchQuery) {
           <p class="movie-release-date">${movie.release_date || "N/A"}</p>
         </div>
       </div>
-    `
+    `,
     )
     .join("");
 
@@ -80,7 +75,7 @@ async function renderSearchResults(searchQuery) {
             }" alt="${details.title} poster" />
             <div class="detail-info">
               <h2 id="detail-title">${details.title}</h2>
-              <p id="detail-genres">${details.genres.map(g => g.name).join(", ")}</p>
+              <p id="detail-genres">${details.genres.map((g) => g.name).join(", ")}</p>
               <p id="detail-release-date">Release Date: ${details.release_date || "N/A"}</p>
               <p id="detail-overview">${details.overview}</p>
               <p id="detail-rating">Rating: ${details.vote_average || "N/A"}</p>
@@ -98,7 +93,7 @@ async function renderSearchResults(searchQuery) {
       trailerContainer.innerHTML = "";
       if (details.videos && details.videos.results) {
         const trailer = details.videos.results.find(
-          (video) => video.type === "Trailer" && video.site === "YouTube"
+          (video) => video.type === "Trailer" && video.site === "YouTube",
         );
         if (trailer) {
           const iframe = document.createElement("iframe");
@@ -121,7 +116,11 @@ async function renderSearchResults(searchQuery) {
       // Render cast
       const castContainer = document.getElementById("cast-container");
       castContainer.innerHTML = "<h3>Cast</h3>";
-      if (details.credits && details.credits.cast && details.credits.cast.length > 0) {
+      if (
+        details.credits &&
+        details.credits.cast &&
+        details.credits.cast.length > 0
+      ) {
         const castHtml = details.credits.cast
           .slice(0, 10)
           .map(
@@ -135,7 +134,7 @@ async function renderSearchResults(searchQuery) {
               <p class="cast-name">${member.name}</p>
               <p class="cast-character">as ${member.character}</p>
             </div>
-          `
+          `,
           )
           .join("");
         castContainer.innerHTML += `<div class="cast-list">${castHtml}</div>`;
@@ -162,4 +161,3 @@ if (query) {
   document.getElementById("search-results-container").innerHTML =
     "<p>No search query provided.</p>";
 }
-
