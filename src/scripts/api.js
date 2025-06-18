@@ -1,9 +1,11 @@
-import { TMDB_API_KEY, TMDB_BASE_URL } from "../config.js";
+import { TMDB_API_KEY, TMDB_BASE_URL, WATCHMODE_API_KEY } from "../config.js";
 
 export class TMDbAPI {
   constructor(apiKey = TMDB_API_KEY) {
     this.apiKey = apiKey;
     this.baseUrl = TMDB_BASE_URL;
+    this.watchmodeApiKey = WATCHMODE_API_KEY;
+    this.watchmodeBaseUrl = "https://api.watchmode.com/v1";
   }
 
   async searchMovies(query) {
@@ -93,6 +95,26 @@ export class TMDbAPI {
       return data;
     } catch (error) {
       console.error("Error fetching movie details:", error);
+      return null;
+    }
+  }
+
+  // New method to get streaming availability from Watchmode API by IMDb ID
+  async getStreamingAvailability(imdbId) {
+    if (!this.watchmodeApiKey) {
+      console.error("Watchmode API key is not set");
+      return null;
+    }
+    const url = `${this.watchmodeBaseUrl}/title/${imdbId}/sources/?apiKey=${this.watchmodeApiKey}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data; // Array of streaming sources
+    } catch (error) {
+      console.error("Error fetching streaming availability:", error);
       return null;
     }
   }

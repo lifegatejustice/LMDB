@@ -135,8 +135,8 @@ h2 {
   background-color: #1c1c1c;
   padding: 1rem;
   border-radius: 8px;
-  margin: 2rem auto;
-  max-width: 900px;
+  margin: 2rem;
+  
   color: white;
   opacity: 0;
   animation: fadeIn 0.5s forwards;
@@ -149,7 +149,7 @@ h2 {
 }
 
 .detail-poster {
-  width: 300px;
+  height: 100vh;
   border-radius: 8px;
   flex-shrink: 0;
 }
@@ -211,6 +211,18 @@ h2 {
 /* Streaming availability */
 #streaming-availability {
   margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#streaming-availability a {
+  border: 2px solid #e50914;
+  margin: 1vh;
+  padding: 1vh;
+
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .streaming-link img {
@@ -552,7 +564,7 @@ button:focus,
     display: none;
   }
   .nav-menu {
-    position: fixed;
+    position: relative;
     width: auto;
     height: auto;
     display: flex;

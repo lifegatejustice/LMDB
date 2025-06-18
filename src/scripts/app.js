@@ -4,6 +4,7 @@ import {
   castMemberComponent,
   streamingPlatformComponent,
 } from "./components.js";
+import { platformLogos } from "./platformLogos.js";
 
 class App {
   constructor() {
@@ -84,6 +85,16 @@ class App {
         this.toggleFavorite();
       }
     });
+
+    // Prevent streaming platform links from triggering other click handlers
+    const streamingContainer = document.getElementById("streaming-availability");
+    if (streamingContainer) {
+      streamingContainer.addEventListener("click", (e) => {
+        if (e.target.closest("a.streaming-link")) {
+          e.stopPropagation();
+        }
+      });
+    }
   }
 
   loadFavorites() {
@@ -150,6 +161,26 @@ class App {
   }
 
   renderMovieDetails(details) {
+    // Helper function to generate star rating HTML
+    const generateStarRating = (rating) => {
+      const maxStars = 5;
+      const stars = [];
+      const fullStars = Math.floor(rating / 2);
+      const halfStar = rating % 2 >= 1 ? true : false;
+
+      for (let i = 0; i < fullStars; i++) {
+        stars.push('<span class="star full">&#9733;</span>'); // full star
+      }
+      if (halfStar) {
+        stars.push('<span class="star half">&#9733;</span>'); // half star (can style differently)
+      }
+      const emptyStars = maxStars - stars.length;
+      for (let i = 0; i < emptyStars; i++) {
+        stars.push('<span class="star empty">&#9734;</span>'); // empty star
+      }
+      return stars.join("");
+    };
+
     document.getElementById("detail-poster").src = details.poster_path
       ? "https://image.tmdb.org/t/p/w500" + details.poster_path
       : "https://via.placeholder.com/500x750?text=No+Image";
@@ -161,8 +192,10 @@ class App {
     document.getElementById("detail-release-date").textContent =
       "Release Date: " + (details.release_date || "N/A");
     document.getElementById("detail-overview").textContent = details.overview;
-    document.getElementById("detail-rating").textContent =
-      "Rating: " + (details.vote_average || "N/A");
+
+    // Render star rating
+    const ratingContainer = document.getElementById("detail-rating");
+    ratingContainer.innerHTML = "Rating: " + generateStarRating(details.vote_average || 0);
 
     this.renderStreamingAvailability(details.id);
     this.renderTrailer(details.videos);
@@ -173,11 +206,51 @@ class App {
 
   async renderStreamingAvailability(movieId) {
     const container = document.getElementById("streaming-availability");
-    container.innerHTML = "<p>Loading streaming availability...</p>";
+    container.innerHTML = `<p>Loading streaming availability...</p>`;
 
-    // Placeholder: Implement Watchmode API call here
-    // For now, show a placeholder message
-    container.innerHTML = "<p>Streaming availability coming soon.</p>";
+    if (!this.currentMovie || !this.currentMovie.imdb_id) {
+      container.innerHTML = "<p>No streaming information available.</p>";
+      return;
+    }
+
+    const streamingData = await this.api.getStreamingAvailability(this.currentMovie.imdb_id);
+    console.log("Streaming data:", streamingData);
+    if (!streamingData || streamingData.length === 0) {
+      container.innerHTML = "<p>No streaming availability found.</p>";
+      return;
+    }
+
+    // Clear container
+    container.innerHTML = "";
+
+    // Remove duplicate platforms by name
+    const uniquePlatforms = [];
+    const platformNames = new Set();
+
+    streamingData.forEach((source) => {
+      if (!platformNames.has(source.name)) {
+        platformNames.add(source.name);
+        uniquePlatforms.push(source);
+      }
+    });
+
+    // Render streaming sources with logos
+    uniquePlatforms.forEach((source) => {
+      if (!source.logo_url) {
+        if (source.name && platformLogos[source.name]) {
+          source.logo_url = platformLogos[source.name];
+        } else {
+          source.logo_url = "images/streaming.webp";
+        }
+      }
+      // Use web_url as the link URL instead of url
+      const platformData = {
+        ...source,
+        url: source.web_url || "",
+      };
+      const sourceHtml = streamingPlatformComponent(platformData);
+      container.insertAdjacentHTML("beforeend", sourceHtml);
+    });
   }
 
   renderTrailer(videos) {

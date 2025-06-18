@@ -96,8 +96,9 @@ export const castMemberComponent = (cast) => `
 
 // New component for streaming platform link
 export const streamingPlatformComponent = (platform) => `
-  <a href="${platform.url}" target="_blank" rel="noopener noreferrer" class="streaming-link">
-    <img src="${platform.logo_url}" alt="${platform.name}" title="${platform.name}" />
+  <a href="${platform.url}" target="_blank" rel="noopener noreferrer" class="streaming-link" style="display:flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit;">
+    <img src="${platform.logo_url}" alt="${platform.name}" title="${platform.name}" style="width: 50px; height: 50px; object-fit: contain;" />
+    <span style="font-size: 0.75rem; margin-top: 4px;">${platform.name}</span>
   </a>
 `;
 
