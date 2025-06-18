@@ -1,7 +1,4 @@
 import { TMDbAPI } from "./api.js";
-import { headerComponent, footerComponent } from "./components.js";
-
-document.getElementById("header").innerHTML = headerComponent;
 
 const api = new TMDbAPI();
 

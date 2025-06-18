@@ -155,38 +155,3 @@ export const favoritesComponent = `
   </section>
 `;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const hamburgerButton = document.getElementById("hamburger-button");
-  const navMenu = document.getElementById("nav-menu");
-
-  function toggleMenu() {
-    const isOpen = navMenu.classList.toggle("open");
-    hamburgerButton.classList.toggle("open");
-    hamburgerButton.setAttribute("aria-expanded", isOpen);
-  }
-
-  navMenu.classList.remove("open");
-  hamburgerButton.classList.remove("open");
-  hamburgerButton.setAttribute("aria-expanded", false);
-
-  hamburgerButton.addEventListener("click", toggleMenu);
-
-  // Close menu when clicking outside
-  document.addEventListener("click", (event) => {
-    if (
-      !navMenu.contains(event.target) &&
-      !hamburgerButton.contains(event.target)
-    ) {
-      navMenu.classList.remove("open");
-      hamburgerButton.setAttribute("aria-expanded", false);
-    }
-  });
-
-  // Optional: close on nav link click
-  document.querySelectorAll(".nav-list a").forEach((link) =>
-    link.addEventListener("click", () => {
-      navMenu.classList.remove("open");
-      hamburgerButton.setAttribute("aria-expanded", false);
-    }),
-  );
-});
