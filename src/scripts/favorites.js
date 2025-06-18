@@ -50,19 +50,17 @@ class FavoritesApp {
           <button class="remove-favorite-button">Remove</button>
         </div>
       </div>
-    `,
+    `
       )
       .join("");
 
-    this.favoritesList
-      .querySelectorAll(".remove-favorite-button")
-      .forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const movieCard = e.target.closest(".movie-card");
-          const movieId = parseInt(movieCard.getAttribute("data-id"));
-          this.removeFavorite(movieId);
-        });
+    this.favoritesList.querySelectorAll(".remove-favorite-button").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const movieCard = e.target.closest(".movie-card");
+        const movieId = parseInt(movieCard.getAttribute("data-id"));
+        this.removeFavorite(movieId);
       });
+    });
   }
 
   async handleMovieClick(title) {

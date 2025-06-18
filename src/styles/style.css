@@ -6,6 +6,11 @@ body {
   color: white;
 }
 main {
+  
+}
+
+#search-section{
+  margin-top: 20px;
 }
 
 a {
@@ -17,10 +22,20 @@ a:hover {
   text-decoration: underline;
 }
 
+#header-container{
+  position:fixed;
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* Header styles */
 header {
   background-color: #1c1c1c;
-  padding: 1rem 2rem;
+  width: 100%;
+  position: fixed;
+  margin-top: -23px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -468,16 +483,7 @@ button:focus,
   }
 }
 
-/* Base reset */
-header {
-  position: relative;
-  padding: 1rem;
-  background-color: #111;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+
 
 #hamburger-button {
   font-size: 1.5rem;
