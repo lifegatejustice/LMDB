@@ -5,13 +5,6 @@ body {
   background-color: #121212;
   color: white;
 }
-main {
-  
-}
-
-#search-section{
-  margin-top: 20px;
-}
 
 a {
   color: #e50914;
@@ -22,20 +15,12 @@ a:hover {
   text-decoration: underline;
 }
 
-#header-container{
-  position:fixed;
-  width: 100% !important;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+#header-container
 
 /* Header styles */
 header {
   background-color: #1c1c1c;
-  width: 100%;
-  position: fixed;
-  margin-top: -23px;
+  padding: 1rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -109,12 +94,13 @@ footer {
 
 #search-form button {
   width: 20vh;
-  height: 5vh;
+  margin-bottom: 0px;
+  
 }
 
 input {
   width: 100vh;
-  height: 4vh;
+  height: 5.1vh;
 }
 
 #search-section {
