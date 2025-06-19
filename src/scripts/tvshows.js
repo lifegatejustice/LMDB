@@ -4,6 +4,7 @@ import {
   streamingPlatformComponent,
   movieDetailComponent,
 } from "./components.js";
+import { platformLogos } from "./platformLogos.js";
 
 class TVShowsApp {
   constructor() {
@@ -124,9 +125,48 @@ class TVShowsApp {
     const container = document.getElementById("streaming-availability");
     container.innerHTML = "<p>Loading streaming availability...</p>";
 
-    // Placeholder: Implement Watchmode API call here
-    // For now, show a placeholder message
-    container.innerHTML = "<p>Streaming availability coming soon.</p>";
+    if (!this.currentTVShow || !this.currentTVShow.imdb_id) {
+      container.innerHTML = "<p>No streaming information available.</p>";
+      return;
+    }
+
+    const streamingData = await this.api.getStreamingAvailability(this.currentTVShow.imdb_id);
+    if (!streamingData || streamingData.length === 0) {
+      container.innerHTML = "<p>No streaming availability found.</p>";
+      return;
+    }
+
+    // Clear container
+    container.innerHTML = "";
+
+    // Remove duplicate platforms by name
+    const uniquePlatforms = [];
+    const platformNames = new Set();
+
+    streamingData.forEach((source) => {
+      if (!platformNames.has(source.name)) {
+        platformNames.add(source.name);
+        uniquePlatforms.push(source);
+      }
+    });
+
+    // Render streaming sources with logos
+    uniquePlatforms.forEach((source) => {
+      if (!source.logo_url) {
+        if (source.name && platformLogos[source.name]) {
+          source.logo_url = platformLogos[source.name];
+        } else {
+          source.logo_url = "images/streaming.webp";
+        }
+      }
+      // Use web_url as the link URL instead of url
+      const platformData = {
+        ...source,
+        url: source.web_url || "",
+      };
+      const sourceHtml = streamingPlatformComponent(platformData);
+      container.insertAdjacentHTML("beforeend", sourceHtml);
+    });
   }
 
   renderTrailer(videos) {

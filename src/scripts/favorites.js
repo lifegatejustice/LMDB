@@ -1,20 +1,13 @@
 import { TMDbAPI } from "./api.js";
 import {
-  headerComponent,
-  footerComponent,
   movieDetailComponent,
 } from "./components.js";
 
 class FavoritesApp {
   constructor() {
     this.api = new TMDbAPI();
-    this.headerContainer = document.getElementById("header-container");
-    this.footerContainer = document.getElementById("footer-container");
     this.favoritesList = document.getElementById("favorites-list");
     this.main = document.querySelector("main");
-
-    this.headerContainer.innerHTML = headerComponent;
-    this.footerContainer.innerHTML = footerComponent;
 
     this.loadFavorites();
 
