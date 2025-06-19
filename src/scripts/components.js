@@ -155,4 +155,3 @@ export const favoritesComponent = `
     </div>
   </section>
 `;
-

@@ -95,7 +95,6 @@ footer {
 #search-form button {
   width: 20vh;
   margin-bottom: 0px;
-  
 }
 
 input {
@@ -136,7 +135,7 @@ h2 {
   padding: 1rem;
   border-radius: 8px;
   margin: 2rem;
-  
+
   color: white;
   opacity: 0;
   animation: fadeIn 0.5s forwards;
@@ -480,8 +479,6 @@ button:focus,
     gap: 1rem;
   }
 }
-
-
 
 #hamburger-button {
   font-size: 1.5rem;

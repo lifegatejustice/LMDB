@@ -17,7 +17,6 @@ class TVShowsApp {
 
     this.favorites = this.loadFavorites();
 
-
     this.searchForm.addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleSearch();
@@ -195,8 +194,7 @@ class TVShowsApp {
     const query = this.searchInput.value.trim();
     if (!query) return;
 
-   this.resultsContainer.innerHTML = `<div class="spinner"></div>`;
-;
+    this.resultsContainer.innerHTML = `<div class="spinner"></div>`;
     const shows = await this.api.searchTVShows(query);
     this.renderResults(shows);
   }
@@ -226,5 +224,3 @@ class TVShowsApp {
 document.addEventListener("DOMContentLoaded", () => {
   const app = new TVShowsApp();
 });
-
-

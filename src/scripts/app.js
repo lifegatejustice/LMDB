@@ -87,7 +87,9 @@ class App {
     });
 
     // Prevent streaming platform links from triggering other click handlers
-    const streamingContainer = document.getElementById("streaming-availability");
+    const streamingContainer = document.getElementById(
+      "streaming-availability",
+    );
     if (streamingContainer) {
       streamingContainer.addEventListener("click", (e) => {
         if (e.target.closest("a.streaming-link")) {
@@ -195,7 +197,8 @@ class App {
 
     // Render star rating
     const ratingContainer = document.getElementById("detail-rating");
-    ratingContainer.innerHTML = "Rating: " + generateStarRating(details.vote_average || 0);
+    ratingContainer.innerHTML =
+      "Rating: " + generateStarRating(details.vote_average || 0);
 
     this.renderStreamingAvailability(details.id);
     this.renderTrailer(details.videos);
@@ -213,7 +216,9 @@ class App {
       return;
     }
 
-    const streamingData = await this.api.getStreamingAvailability(this.currentMovie.imdb_id);
+    const streamingData = await this.api.getStreamingAvailability(
+      this.currentMovie.imdb_id,
+    );
     console.log("Streaming data:", streamingData);
     if (!streamingData || streamingData.length === 0) {
       container.innerHTML = "<p>No streaming availability found.</p>";
