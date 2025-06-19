@@ -4,6 +4,8 @@ import { defineConfig } from "vite";
 export default defineConfig({
   root: "src/",
 
+  publicDir: "src/images",
+
   build: {
     outDir: "../dist",
     rollupOptions: {
