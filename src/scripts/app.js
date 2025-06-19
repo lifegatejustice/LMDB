@@ -245,7 +245,7 @@ class App {
         if (source.name && platformLogos[source.name]) {
           source.logo_url = platformLogos[source.name];
         } else {
-          source.logo_url = "./images/streaming.webp";
+          source.logo_url = "images/streaming.webp";
         }
       }
       // Use web_url as the link URL instead of url
