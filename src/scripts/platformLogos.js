@@ -16,7 +16,7 @@ export const platformLogos = {
   "Paramount Plus":
     "https://upload.wikimedia.org/wikipedia/commons/2/2a/Paramount_Plus_Logo.svg",
   YouTube:
-    "https://upload.wikimedia.org/wikipedia/commons/9/9e/YouTube_Logo.svg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/YouTube_2024.svg/800px-YouTube_2024.svg.png",
   "Google Play":
     "https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg",
   Vudu: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Vudu_Logo.svg",
