@@ -19,7 +19,7 @@ export const platformLogos = {
     "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/YouTube_2024.svg/800px-YouTube_2024.svg.png",
   "Google Play":
     "https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg",
-  Vudu: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Vudu_Logo.svg",
+  Vudu: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Fandango_at_Home_logo_%28horizontal%29.svg/800px-Fandango_at_Home_logo_%28horizontal%29.svg.png",
   Starz: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Starz_Logo.svg",
   Showtime:
     "https://upload.wikimedia.org/wikipedia/commons/4/4a/Showtime_Logo.svg",
